@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Homework 1</title>
+</head>
+<body>
+  <!-- Peter Blanco, PCB72, CS3300, 1/30/2014 -->
+  <p>Problem 0: We use the var statement to declare a variable and
+  set it to a value.
+  <script>
+  var x = 100;
+  </script>
+  </p>
+
+
+  <p><b>Problem 1:</b> Which of the following are NOT Javascript types (that is, will not be returned by the typeof function)? <br/> int and array are NOT Javascript types
+  </p>
+  
+
+  <p><b>Problem 2:</b> Rewrite the following c-style for loop as a "forEach"-style loop: see console
+    <script>
+    var fruits = ["apple","pear","orange"];
+    fruits.forEach( function (s, i) { console.log(i + " " +s);})
+    </script>
+  </p>
+
+
+  <p><b>Problem 3:</b>
+   Define a variable called "calculator". <br/> calculator.plus(10).times(3).minus(6).divideBy(8).x = 
+    <script>
+    var calculator1 = {
+      x : 0,
+      plus : function (num){
+        this.x += num;
+        return this;
+      },
+      minus : function (num){
+        this.x -= num;
+        return this;
+      },
+      times : function (num){
+        this.x *= num;
+        return this;
+      },
+      divideBy : function (num){
+        this.x /= num;
+        return this;
+      }
+    };
+    document.write(calculator1.plus(10).times(3).minus(6).divideBy(8).x);
+    </script> 
+  </p>
+
+
+  <p>
+    <b>Problem 4:</b> Add one: 
+    <script type="text/javascript">
+
+    var calculator2 = {
+      x : 0,
+      plus : function (num){
+        this.x += num;
+        return this;
+      },
+      minus : function (num){
+        this.x -= num;
+        return this;
+      },
+      times : function (num){
+        this.x *= num;
+        return this;
+      },
+      divideBy : function (num){
+        this.x /= num;
+        return this;
+      },
+      operation : function (f){
+        this.x = f(this.x);
+        return this;
+      }
+    };
+
+    var addOne = function (x) { return x + 1; };
+
+    document.write(calculator2.operation(addOne).x);
+    </script>
+  </p>
+
+
+  <p><b>Problem 5:</b>
+      Does the value returned support all the same functions and variables as the "fruits" array we created in an earlier problem? No because the value returned is a NodeList which does not have the forEach method.
+    "TypeError: Object #<NodeList> has no method 'forEach'" <br>
+    <span class="findable"></span>
+    <span class="findable"></span>
+    <span class="findable"></span>
+  </p>
+
+  <script>
+  var spans = document.getElementsByClassName('findable');
+
+  for (var i = 0; i < spans.length; i++) {
+    var item = spans[i];
+    item.innerHTML = i;
+  };
+  </script>
+
+  
+</body>
+</html>
