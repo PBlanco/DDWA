@@ -3,10 +3,165 @@
 <head>
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <title>Homework 3</title>
-  <style>
-  </style>
 </head>
 <body>
+
+<div id="question1">
+<script>
+  /* Question 1: Write your own Javascript function that has the same behavior as the d3 function returned by this expression:  d3.scale.linear().domain([-85, 85]).range([200, 0])
+
+  In Q1, provide a function that reproduces the exact behavior of the d3 scale returned by the specified d3 code 
+(ie using the numbers specified)/ */ 
+  var linear = function(x){
+    // if domain is invalid
+    if ((x < -85) || (x > 85)){
+      return 0; 
+    }
+    return ((-20/17) * x) + 100;
+  }
+</script>
+</div>
+
+<div id="question2">
+  <!--
+Revisiting HW1, Q5: Create three <div> elements with class "findable". Using a single d3 function, select all the nodes with this class. Set the content of these nodes to "found", and set the style to display in red text. Consult the d3js.org API documentation as necessary. (10 pts)
+-->
+<span class="findable"></span>
+<span class="findable"></span>
+<span class="findable"></span>
+
+<script>
+  d3.selectAll(".findable").text("found").style({'color':'red'});
+</script>
+</div>
+
+<div id="question3">
+  <!-- In problem 2 on HW2 you recreated Fig. 2 from the Wickham reading using SVG elements. Now create the same plot again, but this time using d3 functions. 
+  1. First create x and y scale functions that map from data coordinates to SVG coordinates (10 pts). 
+  2. Add circles and rectangles, with positions given by the x and y scales. You don't need to use a data array: it's fine if you do a separate command for each shape (10 pts). 
+  3. Add lines for the axes, again using the x and y scale functions (10 pts). 
+  4. Now add an event listener that changes the color of the circles and rectangles to blue when they are clicked, using d3 selections (10 pts).
+
+  When you click a shape, only that element should change color.
+  Include axes (tick marks optional) and text labels as in HW2, but use d3 commands to add them  -->
+
+  <style>
+  .axis path,
+  .axis line {
+      fill: none;
+      stroke: black;
+      shape-rendering: crispEdges;
+  }
+
+  .axis text {
+      font-family: sans-serif;
+      font-size: 11px;
+  }
+
+  </style>
+  <div id="canvas3"><div>
+
+  <script>
+
+  var xdata = [2, 1, 4, 9],
+      ydata = [4, 1, 15, 80];
+
+  var margin = {top: 30, right: 40, bottom: 40, left: 30},
+       width = 200 - margin.left - margin.right,
+      height = 200 - margin.top - margin.bottom;
+
+  var xScale = d3.scale.linear()
+                .domain([0, d3.max(xdata)])
+                .range([margin.left, width]);
+  var yScale = d3.scale.linear()
+                .domain([0, d3.max(ydata)])
+                .range([height, margin.top]);
+
   
+  var cPoints = [{x:  2, y:  4}, {x:   1, y:   1}];
+  var sPoints = [{x:  4, y:  15}, {x: 9, y: 80}];
+
+ 
+
+  var svg = d3.select("#canvas3").append("svg")
+   .attr("height", 200).attr("width", 200);
+
+  var circles = svg.selectAll("circle").data(cPoints);
+  
+  circles.enter().append("circle")
+  .attr("cx", function (point) { return xScale(point.x);  })
+  .attr("cy", function (point) { return yScale(point.y);  })
+  .attr("r", 5)
+  .on("click", function(){d3.select(this).style("fill", "blue");});
+
+  var squares = svg.selectAll("rect").data(sPoints);
+  squares.enter().append("rect")
+  .attr("x", function (point) { return xScale(point.x);  })
+  .attr("y", function (point) { return yScale(point.y);  })
+  .attr("width", 10)
+  .attr("height", 10)
+  .on("click", function(){d3.select(this).style("fill", "blue");});  
+  
+  //Axis tutoral for future refrence http://alignedleft.com/tutorials/d3/axes
+  //X axis
+  var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .orient("bottom");
+
+  svg.append("g")
+    .attr('class', 'axis')
+    .attr("transform", "translate(0," + (height + 10) + ")")
+    .call(xAxis); 
+
+  //y axis
+  var yAxis = d3.svg.axis()
+                  .scale(yScale)
+                  .orient("left");
+
+  svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(" + margin.left + ",0)")
+    .call(yAxis);
+  </script>
+</div>
+
+<div id="question4">
+  
+  <script>
+
+  var wordRanks = [{rank: 1, count: 15342397280, word: "of"},
+                  {rank: 2, count: 7611765281, word: "in"},
+                  {rank: 4, count: 11021132912, word: "and"},
+                  {rank: 8, count: 3021925527, word: "for"},
+                  {rank: 16, count: 1562321315, word: "at"},
+                  {rank: 32, count: 746702714, word: "more"},
+                  {rank: 64, count: 652703221, word: "its"},
+                  {rank: 128, count: 186584246, word: "different"},
+                  {rank: 256, count: 102237666, word: "light"},
+                  {rank: 512, count: 44824164, word: "middle"},
+                  {rank: 1024, count: 34340679, word: "additional"},
+                  {rank: 2048, count: 11864923, word: "abandoned"},
+                  {rank: 4096, count: 7506730, word: "motive"},
+                  {rank: 8192, count: 10615754, word: "Die"},
+                  {rank: 16384, count: 907890, word: "portrays"},
+                  {rank: 32768, count: 226851, word: "Fundamentally"},
+                  {rank: 65536, count: 144913, word: "dv"}];
+
+
+  var xScale = d3.scale.linear()
+                .domain([0, d3.max(wordRanks, function(word){return word.rank;})])
+                .range([margin.left, width]);
+  var yScale = d3.scale.linear()
+                .domain([0, d3.max(ydata)])
+                .range([height, margin.top]);
+
+</script>
+
+
+
+
+</div>
+
+
 </body>
 </html>
