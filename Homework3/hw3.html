@@ -3,6 +3,9 @@
 <head>
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <title>Homework 3</title>
+  <style>
+  svg { border: solid black 1px; }
+  </style>
 </head>
 <body>
 
@@ -125,8 +128,13 @@ Revisiting HW1, Q5: Create three <div> elements with class "findable". Using a s
   </script>
 </div>
 
+<!-- - - - - - - - - - - - - -  - - - - - - - - - - - - - - -  -->
+
 <div id="question4">
-  
+  <div id="canvas4"></div>
+  <div id="canvas41"></div>
+  <div id="canvas42"></div>
+
   <script>
 
   var wordRanks = [{rank: 1, count: 15342397280, word: "of"},
@@ -147,13 +155,66 @@ Revisiting HW1, Q5: Create three <div> elements with class "findable". Using a s
                   {rank: 32768, count: 226851, word: "Fundamentally"},
                   {rank: 65536, count: 144913, word: "dv"}];
 
+  var margin = {top: 0, right: 0, bottom: 0, left: 0},
+       width = 200 - margin.left - margin.right,
+      height = 200 - margin.top - margin.bottom;
 
+  //Rank A
   var xScale = d3.scale.linear()
-                .domain([0, d3.max(wordRanks, function(word){return word.rank;})])
+                .domain([1, d3.max(wordRanks, function(word){return word.rank;})])
                 .range([margin.left, width]);
+
   var yScale = d3.scale.linear()
-                .domain([0, d3.max(ydata)])
+                .domain([1, d3.max(wordRanks, function(word){return word.count;})])
                 .range([height, margin.top]);
+
+  var svg4 = d3.select("#canvas4").append("svg")
+   .attr("height", 200).attr("width", 200);
+
+  //B
+  var xLogScale = d3.scale.linear()
+                .domain([1,12])
+                .range([margin.left, width]);
+  var yLogScale = d3.scale.linear()
+                .domain([1,25])
+                .range([height, margin.top]);
+
+  var svg41 = d3.select("#canvas41").append("svg")
+   .attr("height", 200).attr("width", 200);
+
+  //C
+  var svg42 = d3.select("#canvas42").append("svg")
+   .attr("height", 200).attr("width", 200);
+
+  var xLogScale1 = d3.scale.log()
+                .domain([1, d3.max(wordRanks, function(word){return word.rank;})])
+                .range([margin.left, width]);
+
+  var yLogScale1 = d3.scale.log()
+                .domain([1, d3.max(wordRanks, function(word){return word.count;})])
+                .range([height, margin.top]);
+
+  //Setup SVG elements
+  wordRanks.forEach(function (w) {
+    //A
+    svg4.append("text")
+    .attr("x", xScale(w.rank))
+    .attr("y", yScale(w.count))
+    .text(w.word);
+    //B
+    svg41.append("text")
+    .attr("x", xLogScale(Math.log(w.rank)))
+    .attr("y", yLogScale(Math.log(w.count)))
+    .text(w.word);
+
+    svg42.append("text")
+    .attr("x", xLogScale1(w.rank))
+    .attr("y", yLogScale1(w.count))
+    .text(w.word);
+  });
+   //4 A) This visualization is not useful because it clumps the words together in a small space placing them on the near the x and y axis.
+  //B
+
 
 </script>
 
@@ -165,3 +226,11 @@ Revisiting HW1, Q5: Create three <div> elements with class "findable". Using a s
 
 </body>
 </html>
+
+
+
+<!--   // var words = svg4.selectAll("text").data(wordRanks);
+  // words.enter().append("text")
+  //   .attr("x", function(w) { return xScale(w.rank);})
+  //   .attr("y", function(w) { return yScale(w.count);})
+  //   .text(function (w) { return w.word; } ); -->
