@@ -25,10 +25,9 @@
 </script>
 </div>
 
+<!-- - - - - - - - - - - - - -  - - - - - - - - - - - - - - -  -->
 <div id="question2">
-  <!--
-Revisiting HW1, Q5: Create three <div> elements with class "findable". Using a single d3 function, select all the nodes with this class. Set the content of these nodes to "found", and set the style to display in red text. Consult the d3js.org API documentation as necessary. (10 pts)
--->
+  <!-- Revisiting HW1, Q5: Create three <div> elements with class "findable". Using a single d3 function, select all the nodes with this class. Set the content of these nodes to "found", and set the style to display in red text. Consult the d3js.org API documentation as necessary. (10 pts) -->
 <span class="findable"></span>
 <span class="findable"></span>
 <span class="findable"></span>
@@ -60,8 +59,10 @@ Revisiting HW1, Q5: Create three <div> elements with class "findable". Using a s
       font-family: sans-serif;
       font-size: 11px;
   }
-
   </style>
+
+  <!-- - - - - - - - - - - - - -  - - - - - - - - - - - - - - -  -->
+
   <div id="canvas3"><div>
 
   <script>
@@ -131,6 +132,7 @@ Revisiting HW1, Q5: Create three <div> elements with class "findable". Using a s
 <!-- - - - - - - - - - - - - -  - - - - - - - - - - - - - - -  -->
 
 <div id="question4">
+  <p>The visualization is not useful because of the size of the scales being mapped to the x and y axis. It makes it difficult to distinguish between the locations of the data values. </p>
   <div id="canvas4"></div>
   <div id="canvas41"></div>
   <div id="canvas42"></div>
@@ -196,7 +198,7 @@ Revisiting HW1, Q5: Create three <div> elements with class "findable". Using a s
 
   //Setup SVG elements
   wordRanks.forEach(function (w) {
-    //A
+    
     svg4.append("text")
     .attr("x", xScale(w.rank))
     .attr("y", yScale(w.count))
@@ -212,10 +214,7 @@ Revisiting HW1, Q5: Create three <div> elements with class "findable". Using a s
     .attr("y", yLogScale1(w.count))
     .text(w.word);
   });
-   //4 A) This visualization is not useful because it clumps the words together in a small space placing them on the near the x and y axis.
-  //B
-
-
+   
 </script>
 
 
