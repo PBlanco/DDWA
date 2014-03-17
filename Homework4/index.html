@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <title>Homework 5</title>
+  <style>
+    body {
+     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+    font-weight: 300;
+    width: 940px;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-box-shadow: 0 0 3px 1px #BABABA;
+    box-shadow: 0 0 3px 1px #BABABA;
+     }
+     #title{
+      width: 50%;
+      margin: 0 auto;
+      text-align: center;
+     }
+    table {
+      font-family: verdana,arial,sans-serif;
+      font-size:11px;
+      color:#333333;
+      border-width: 1px;
+      border-color: #666666;
+      border-collapse: collapse;
+    }
+    table th {
+      border-width: 1px;
+      padding: 8px;
+      border-style: solid;
+      border-color: #666666;
+      background-color: #dedede;
+    }
+    table td {
+      border-width: 1px;
+      padding: 8px;
+      border-style: solid;
+      border-color: #666666;
+      background-color: #ffffff;
+    }
+    div {
+      padding: 30px 30px 30px 30px;
+    }
+    .axis path { fill: none; stroke: black;}
+    .axis line {stroke :black;}
+
+    .line {
+      fill: none;
+      stroke: black;
+      stroke-width: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div id="title">
+    <h1>Homework 4</h1>
+    <h3>Peter Blanco</h3>
+    <h4>CS 3300 - March 9, 2014</h2>
+  </div>
+  <div>
+    Question 1: 75%
+  </div>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+  <div>
+    Question 2:
+    <script>
+    var birdNames = ["CG","BH","NP","RTH","PW","M"];
+    var stewartParkBirds = [1000,30,75,40,15,1000];
+    var sswoodsBirds = [400,1,25,20,15,350];
+
+    function calc_total(array){
+      var birds = 0;
+      array.forEach(function(bird){
+        birds += bird;
+      });
+      return birds
+    }
+    function prob_sighting(array, total){
+      var prob = [];
+      array.forEach(function(bird, i){
+        temp = bird / total;
+        prob[i] = temp;
+      });
+      return prob;
+    }
+    var totalStewartPark = calc_total(stewartParkBirds);
+    var totalSswoods = calc_total(sswoodsBirds);
+
+    var stewartParkBirdsProb = prob_sighting(stewartParkBirds, totalStewartPark);
+    var sswoodsBirdsProb = prob_sighting(sswoodsBirds, totalSswoods);
+
+
+    </script>
+    <table>
+      <tr>
+        <th>Birds</th>
+        <th>Stewart Park</th>
+        <th>Sapscuker Woods</th>
+      </tr>
+      <tr>
+        <td>GG</td>
+        <td>0.463</td>
+        <td>0.493</td>
+      </tr>
+      <tr>
+        <td>BH</td>
+        <td>0.014</td>
+        <td>0.001</td>
+      </tr>
+      <tr>
+        <td>NP</td>
+        <td>0.035</td>
+        <td>0.031</td>
+      </tr>
+      <tr>
+        <td>RTH</td>
+        <td>0.019</td>
+        <td>0.025</td>
+      </tr>
+      <tr>
+        <td>PW</td>
+        <td>0.007</td>
+        <td>0.018</td>
+      </tr>
+      <tr>
+        <td>M</td>
+        <td>0.463</td>
+        <td>0.432</td>
+      </tr>
+    </table>
+  </div>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+  <div>
+    Question 3: P(RTH, PW | SSWoods) = 0.025 x 0.018 = 0.00045 = .04%
+  </div>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+  <div>
+    Question 4: P(RTH, PW, SSWoods) = P(RTH, PW | SSWoods) x P(SSwoods) = 0.00045 x .75 = .00034 = .034%
+  </div>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+  <div>
+    Question 5: logProb(location, birdSpecies) where location is "SP" (Stewart Park) or "SW" (Sapsucker Woods) and birdSpecies is an array containing any of these species ["CG","BH","NP","RTH","PW","M"].
+    <script> 
+    var jsonData = {
+    "SW" : {
+      locationProb : .75,
+      birdProb : {},
+      logProb : []
+    }, 
+    "SP" : {
+      locationProb : .25,
+      birdProb : {},
+      logProb : []
+    }
+    }
+    //Create json of birds
+    sswoodsBirdsProb.forEach(function(bp, i){
+      jsonData["SW"].birdProb[birdNames[i]] = bp;
+    });
+    stewartParkBirdsProb.forEach(function(bp, i){
+      jsonData["SP"].birdProb[birdNames[i]] = bp;
+    });
+
+    //The questions function
+    function logProb(location, birdSpecies) {
+      var prob = jsonData[location].locationProb;
+      birdSpecies.forEach(function(species, i){
+        prob *= jsonData[location].birdProb[species];
+      });
+      return Math.log(prob);
+    }
+    </script>
+  </div>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+  <div>
+    Questions 6 & 7:<br/>
+    Stewart Park
+    <table id="park">
+      <tr>
+        <th>Birds</th>
+        <th>Log Probability</th>
+      </tr>
+    </table>
+    <br/>
+    Sapsucker Woods
+    <table id="woods">
+      <tr>
+        <th>Birds</th>
+        <th>Log Probability</th>
+      </tr>
+    </table>
+
+    <script>
+      var probJSON = [];
+      probJSON[0] = 
+      {
+        "sighting" : "Prior",
+        "logProbSW" : logProb("SW", []).toFixed(6),
+        "logProbSP" : logProb("SP", []).toFixed(6)
+      };
+      var row = d3.select("#park").append('tr');
+      row.append("td").text(probJSON[0].sighting);
+      row.append("td").text(probJSON[0].logProbSP);
+
+      var row = d3.select("#woods").append('tr');
+      row.append("td").text(probJSON[0].sighting);
+      row.append("td").text(probJSON[0].logProbSW);
+
+
+      for (var i = 0; i < birdNames.length; i++) {
+        var bnames = [];
+        for (var k = 0; k <=i; k++) {
+          bnames[k] = birdNames[k];
+        }
+
+        probJSON[i+1] =
+          {
+            "sighting" : bnames.toString(),
+            "logProbSW" : logProb("SW", bnames).toFixed(6),
+            "logProbSP" : logProb("SP", bnames).toFixed(6)
+          };
+
+        var row = d3.select("#park").append('tr');
+        row.append("td").text(probJSON[i+1].sighting);
+        row.append("td").text(probJSON[i+1].logProbSP);
+
+        var row = d3.select("#woods").append('tr');
+        row.append("td").text(probJSON[i+1].sighting);
+        row.append("td").text(probJSON[i+1].logProbSW);
+      }
+
+    </script>
+  </div>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+  <div>
+    Question 8: <br/>
+    <svg id="q8"></svg>
+    <script>
+    var margin = {top: 20, right: 20, bottom: 40, left: 60},
+      width = 480 - margin.left - margin.right,
+      height = 250 - margin.top - margin.bottom;
+
+    var svg = d3.select("#q8")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom + 30)
+      .attr("align", "center");
+
+    //Scales
+    var max = d3.max(probJSON, function(obj){ return Math.abs(obj.logProbSW - obj.logProbSP);});
+    yScale = d3.scale.linear()
+      .domain([-max,max])
+      .range([height,margin.top]);
+
+    xAxisNames = ["Prior", "CG","BH","NP","RTH","PW","M"];
+    xScale = d3.scale.ordinal()
+      .domain(xAxisNames)
+      .rangePoints([margin.left, width]);
+
+    //Axis
+    var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+    var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(5);
+
+    svg.append('g').call(yAxis)
+        .attr('class', 'axis')
+        .attr("transform", "translate( 40, 0)")
+
+      svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + (height/2 + 10)+ ")")
+        .call(xAxis)
+    
+     //Line function
+      var line = d3.svg.line()
+        .x(function (x, i){return xScale(xAxisNames[i]);})
+        .y(function (y){return yScale(y.logProbSW - y.logProbSP);});
+
+      //Append the lines 
+      svg.append('path').attr('d', line(probJSON)).attr("class", "line");
+    </script>
+  </div>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+  <div>
+    Question 9: Based off the graph created in question 8, it is more likely that trip was to Sapsucker Woods. The fact that one goes to Sapsucker Woods 3 times as much as Stewart Park had the greatest effect on the probabilities and therefore the most effect on the final difference in log probabilities.  The prior does affect the final guess: it is the probability of the location prior to the bird sightings.
+
+  </div>
+</body>
+</html>
