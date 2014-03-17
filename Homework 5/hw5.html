@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <style>
+  .land {
+    fill: #95a5a6;
+  }
+
+  .boundary {
+    fill: none;
+    stroke: #fff;
+    stroke-width: .5px;
+  }
+
+</style>
+
+  <meta charset="UTF-8">
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <title>HW5</title>
+</head>
+<body>
+  <!-- Question 1 - -  - - - - - - - - - - - - - - - - - - - - - - -->
+  <div id="map"></div>
+  <script>
+  var width = 640,
+      height = 333;
+
+  var projection = d3.geo.mercator()
+  .scale((width + 1) / 2 / Math.PI)
+    .translate([width / 2, height / 2])
+    .precision(.1);;
+
+  var path = d3.geo.path()
+    .projection(projection);
+
+  var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  var g = svg.append("g");
+  
+  d3.json("./world-50m.json", function(error, world) {
+    svg.insert("path", ".graticule")
+        .datum(topojson.feature(world, world.objects.land))
+        .attr("class", "land")
+        .attr("d", path);
+
+    svg.insert("path", ".graticule")
+        .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+        .attr("class", "boundary")
+        .attr("d", path);
+
+    //manhatten
+    svg.append("circle").attr("r",5).attr("transform", function() {return "translate(" + projection([-74,40]) + ")";}).style("fill","red");
+    svg.append('text').text("Manhatten").attr("transform", function() {return "translate(" + projection([-74,40]) + ")";}).attr("text-anchor", "right").attr("x", 6);
+
+    //Palo Alto
+    svg.append("circle").attr("r",5).attr("transform", function() {return "translate(" + projection([-122,37]) + ")";}).style("fill","red");
+    svg.append('text').text("Palo Alto").attr("transform", function() {return "translate(" + projection([-122,37]) + ")";}).attr("text-anchor", "right").attr("x", 6);
+
+    //Barcelona
+    svg.append("circle").attr("r",5).attr("transform", function() {return "translate(" + projection([2,41]) + ")";}).style("fill","red");
+    svg.append('text').text("Barcelona").attr("transform", function() {return "translate(" + projection([2,41]) + ")";}).attr("text-anchor", "right").attr("x", 6);
+    
+
+  });
+  </script>
+  <!-- Question 2 - -  - - - - - - - - - - - - - - - - - - - - - - -->
+
+</body>
+</html>
