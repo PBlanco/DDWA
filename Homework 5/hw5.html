@@ -9,6 +9,9 @@
     margin-left: auto;
     margin-right: auto;
   }
+  div{
+    padding: 10px 10px;
+  }
   svg { 
     border: solid black 1px; 
   }
@@ -81,7 +84,11 @@
   });
   </script>
   <!-- Question 2 - -  - - - - - - - - - - - - - - - - - - - - - - -->
-  Question 2:
+  
+  <div>
+    <br/>
+    Quesiton 2 and 3:
+  </div>
   
   <script>
   var plotHistogram = function plotHistogram(elemid, nums){
@@ -97,33 +104,21 @@
   
     
     var xScale = d3.scale.linear()
-    .domain([0, d3.max(nums)]).range([0, width]);
+      .domain([0, d3.max(nums)])
+      .range([0, width]);
 
-    var histogram = d3.layout.histogram().bins(30);
 
-    var bins = histogram(nums);
-
-    var binWidth = bins[0].dx;
+    var data = d3.layout.histogram()
+      .bins(xScale.ticks(20))
+      (nums);
 
     var yScale = d3.scale.linear()
-      .domain([0, d3.max(bins, function (bin) { return bin.y; })])
-      .range([height, margin.top]);
-    
-    var bars = svg.selectAll(".bar")
-      .data(bins);
-    
-    bars.enter().append("g").attr("class", "bar");
-    
-    bars.attr("transform", function (bar) { return "translate(" + xScale(bar.x) + ", " + yScale(bar.y) + ")"; });
-    
-    bars.append("rect")
-      .attr("x", 1)
-      .attr("width", xScale(binWidth) - xScale(0) - 1)
-      .attr("height", function (bar) { return height - yScale(bar.y); });
-    
+      .domain([0, d3.max(data, function(d) { return d.y; })])
+      .range([height, 0]);
+
     //Axis
-    var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
-    var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(5);
+    var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(8);
+    var yAxis = d3.svg.axis().scale(yScale).orient("left");
 
     svg.append('g').call(yAxis)
       .attr('class', 'axis')
@@ -134,12 +129,24 @@
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
       .call(xAxis)
+
+    //Bar stuff
+    var bar = svg.selectAll(".bar")
+      .data(data)
+      .enter().append("g")
+      .attr("class", "bar")
+      .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(d.y) + ")"; });
+    bar.append("rect")
+      .attr("x", 1)
+      .attr("width", xScale(data[0].dx) - 1)
+      .attr("height", function(d) { return height - yScale(d.y); });
+
   }
   //TODO: Fix x scales
   </script>
   <!-- Question 3 - -  - - - - - - - - - - - - - - - - - - - - - - -->
-  Question 3:
   <div id="q3"> </div>
+  <div id="q4">Question 4: <br/> </div>
   <script>
     // Random normal generator function
     var normal = d3.random.normal();
@@ -150,14 +157,77 @@
       };
       return temp;
     }
-    var normArray = normal1000();
-    // plotHistogram("#q3",normArray);
-        plotHistogram("#q3",[1,1,2,3,4,6,21,2,5,7,2,2,6]);
+    plotHistogram("#q3",normal1000());
 
+  //-- Question 4 - -  - - - - - - - - - - - - - - - - - - - - - - -->
 
+  var question4Arr = []
 
+  for (var i = 0; i < 100; i++) {
+    question4Arr[i] = d3.mean(normal1000());
+  }
+  plotHistogram("#q4",question4Arr);
+  </script>
+  <div>
+    Does Problem 4 plot have roughly the same shape as the plot from Problem 3? -- YES <br/>
 
+    Does Problem 4 plot have the same x-scale? If not, how is it different? --  No the x-scales are diffrent: The x-Scale for P4's plot is smaller than that of P3.
+  </div>
+
+  <!-- Question 4 - -  - - - - - - - - - - - - - - - - - - - - - - -->
+  <div id="q5">
+    Question 5: <br/>
+  </div>
+  <script>
+    var exponential1000 = function(){
+      temp = []
+      for (var i = 0; i < 1000; i++) {
+        temp[i] = -Math.log(Math.random());
+      };
+      return temp;
+    }
+  plotHistogram("#q5", exponential1000());
   </script>
 
+  <!-- Question 6 - -  - - - - - - - - - - - - - - - - - - - - - - -->
+  <div id="q6">
+    Question 6: <br/>
+    Does the histogram of the distribution (from the previous problem) look like the histogram of the mean of samples from the distribution? No the density plot of means clustered around 1 where the distribution in the previous chart is spread out over 0 to ~8<br/>
+  </div>
+  <script>
+    var question6Arr = []
+
+    for (var i = 0; i < 100; i++) {
+      question6Arr[i] = d3.mean(exponential1000());
+    }
+    plotHistogram("#q6",question6Arr);
+  </script>
+
+  <!-- Question 7 - -  - - - - - - - - - - - - - - - - - - - - - - -->
+  <div id="q7">
+    Question 7: <br/>
+    Does the histogram of the means from this distribution look like the histograms of means from Problems 4 and 6? -- It looks similair to 4 but not to 6 becuase the means of 6  <br/>
+  </div>
+  <script>
+    var cauchy1000 = function(){
+      temp = []
+      for (var i = 0; i < 1000; i++) {
+        temp[i] = (normal() / normal());
+      };
+      return temp;
+    }
+    plotHistogram("#q7",cauchy1000());
+  </script>
+
+  <div id="q8">
+    Question 8:<br/>
+  </div>
+  <script>
+  var question8Arr = []
+    for (var i = 0; i < 100; i++) {
+      question8Arr[i] = d3.mean(cauchy1000());
+    }
+    plotHistogram("#q8",question8Arr)
+  </script>
 </body>
 </html>
