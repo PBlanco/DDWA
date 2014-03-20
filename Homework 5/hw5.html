@@ -3,16 +3,25 @@
 <head>
   <style>
   body {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
     font-weight: 300;
     width: 940px;
     margin-left: auto;
     margin-right: auto;
-  }
-  div{
-    padding: 10px 10px;
-  }
+    -webkit-box-shadow: 0 0 3px 1px #BABABA;
+    box-shadow: 0 0 3px 1px #BABABA;
+     }
+     #title{
+      width: 50%;
+      margin: 0 auto;
+      text-align: center;
+     }
+  div {
+        padding: 30px 30px 30px 30px;
+      }
   svg { 
+    display:block;
+    margin: auto;
     border: solid black 1px; 
   }
   .axis path { fill: none; stroke: black;}
@@ -27,6 +36,11 @@
     stroke: #fff;
     stroke-width: .5px;
   }
+  rect{
+    stroke-width:1px;
+    stroke:black;
+    fill:lightgrey;
+  }
 
 </style>
 
@@ -36,6 +50,11 @@
   <title>HW5</title>
 </head>
 <body>
+  <div id="title">
+    <h1>Homework 4</h1>
+    <h3>Peter Blanco -- PCB72</h3>
+    <h4>CS 3300 - March 9, 2014</h2>
+  </div>
   <!-- Question 1 - -  - - - - - - - - - - - - - - - - - - - - - - -->
   Question 1:
   <div id="map"></div>
@@ -68,16 +87,16 @@
         .attr("class", "boundary")
         .attr("d", path);
 
-    //manhatten
-    svg.append("circle").attr("r",5).attr("transform", function() {return "translate(" + projection([-74,40]) + ")";}).style("fill","red");
-    svg.append('text').text("Manhatten").attr("transform", function() {return "translate(" + projection([-74,40]) + ")";}).attr("text-anchor", "right").attr("x", 6);
+    //manhattan
+    svg.append("circle").attr("r",5).attr("transform", function() {return "translate(" + projection([-74,40]) + ")";}).style("fill","black");
+    svg.append('text').text("Manhattan").attr("transform", function() {return "translate(" + projection([-74,40]) + ")";}).attr("text-anchor", "right").attr("x", 6);
 
     //Palo Alto
-    svg.append("circle").attr("r",5).attr("transform", function() {return "translate(" + projection([-122,37]) + ")";}).style("fill","red");
+    svg.append("circle").attr("r",5).attr("transform", function() {return "translate(" + projection([-122,37]) + ")";}).style("fill","black");
     svg.append('text').text("Palo Alto").attr("transform", function() {return "translate(" + projection([-122,37]) + ")";}).attr("text-anchor", "right").attr("x", 6);
 
     //Barcelona
-    svg.append("circle").attr("r",5).attr("transform", function() {return "translate(" + projection([2,41]) + ")";}).style("fill","red");
+    svg.append("circle").attr("r",5).attr("transform", function() {return "translate(" + projection([2,41]) + ")";}).style("fill","black");
     svg.append('text').text("Barcelona").attr("transform", function() {return "translate(" + projection([2,41]) + ")";}).attr("text-anchor", "right").attr("x", 6);
     
 
@@ -104,7 +123,7 @@
   
     
     var xScale = d3.scale.linear()
-      .domain([0, d3.max(nums)])
+      .domain([d3.min(nums), d3.max(nums)])
       .range([0, width]);
 
 
@@ -138,7 +157,7 @@
       .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(d.y) + ")"; });
     bar.append("rect")
       .attr("x", 1)
-      .attr("width", xScale(data[0].dx) - 1)
+      .attr("width", xScale(data[0].dx) - xScale(0))
       .attr("height", function(d) { return height - yScale(d.y); });
 
   }
@@ -229,5 +248,21 @@
     }
     plotHistogram("#q8",question8Arr)
   </script>
+
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <a href="https://imgflip.com/i/7nd4m"><img src="//i.imgflip.com/7nd4m.jpg" title="made at imgflip.com"/></a>
 </body>
 </html>
